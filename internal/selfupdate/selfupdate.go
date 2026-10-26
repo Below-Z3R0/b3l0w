@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/Below-Z3R0/b3l0w/internal/cli"
 	"github.com/Below-Z3R0/b3l0w/internal/fetch"
@@ -28,6 +29,15 @@ type Result struct {
 	Changed bool
 }
 
+// withV deja la versión con una sola "v": el ldflags puede venir con
+// ella (v0.2.0) o sin ella (0.2.0).
+func withV(v string) string {
+	if strings.HasPrefix(v, "v") {
+		return v
+	}
+	return "v" + v
+}
+
 // Run baja el último release y reemplaza el binario en ejecución.
 func Run() (Result, error) {
 	var result Result
@@ -45,7 +55,7 @@ func Run() (Result, error) {
 		return result, fmt.Errorf("el binario es del paquete %s: se actualiza con pacman", owner)
 	}
 
-	result.Before = "v" + version.Version
+	result.Before = withV(version.Version)
 
 	url := fmt.Sprintf("https://github.com/%s/releases/latest/download/%s", repo, asset)
 	tmp, err := fetch.ToTemp(url)
