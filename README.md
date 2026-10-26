@@ -54,6 +54,29 @@ El manifiesto declara el asset porque cada repo publica el suyo:
 `install` deja el **binario**. La configuración (configs de fastfetch,
 enganche de fish) la hace el propio programa con su `install`.
 
+## Instalar el sistema
+
+```
+b3l0w install system                        # simulación del perfil desktop
+b3l0w install system --profile=desktop,dev  # varios perfiles
+b3l0w install system --apply                # lo aplica
+```
+
+Compara la definición embebida (`internal/systemdef/system.json`) contra la
+máquina y lista lo que falta, separado por fuente:
+
+| Fuente | Cómo se instala |
+|---|---|
+| `repo` | `pacman -S --needed` |
+| `flatpak` | `flatpak install flathub` |
+| `own` | `b3l0w install <programa>` (release; pacman en la Etapa 2) |
+| `services` | `systemctl enable` |
+| `groups` | `usermod -aG` |
+| `files` | copia de `--dotfiles` con backup |
+
+Perfiles: `desktop` (default), `dev`, `gaming`, `tools`. Los dotfiles viven en
+`dotfiles/` y se aplican con `--dotfiles .` desde el repo.
+
 ## Actualizarse a sí mismo
 
 ```

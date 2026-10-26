@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "profiles": {
+    "desktop": {
+      "repo": [
+        "plasma-meta",
+        "sddm",
+        "kitty",
+        "fastfetch",
+        "noctalia",
+        "umbriel",
+        "pipewire",
+        "wireplumber",
+        "dolphin",
+        "qalculate-gtk",
+        "obsidian",
+        "vesktop-bin",
+        "code",
+        "flatpak",
+        "docker",
+        "docker-compose",
+        "noto-fonts",
+        "noto-fonts-emoji",
+        "ttf-meslo-nerd",
+        "ttf-material-symbols-variable"
+      ],
+      "flatpak": [
+        "app.zen_browser.zen",
+        "org.upscayl.Upscayl",
+        "org.vinegarhq.Sober"
+      ],
+      "own": ["b3l0w", "boot-preview", "kitty-shapes"],
+      "services": ["NetworkManager", "bluetooth", "sddm", "docker.socket"],
+      "groups": ["docker", "video", "input", "wheel"],
+      "files": [
+        { "src": "dotfiles/fish", "dest": "~/.config/fish" },
+        { "src": "dotfiles/fastfetch", "dest": "~/.config/fastfetch" },
+        { "src": "dotfiles/noctalia", "dest": "~/.config/noctalia" },
+        { "src": "dotfiles/umbriel", "dest": "~/.config/umbriel" }
+      ]
+    },
+    "dev": {
+      "repo": ["go", "python", "git", "github-cli", "bun", "typescript"]
+    },
+    "gaming": {
+      "repo": ["steam", "proton-cachyos-native", "mangohud", "gamescope", "gamemode"]
+    },
+    "tools": {
+      "repo": ["nmap", "bettercap", "arp-scan"]
+    }
+  }
+}

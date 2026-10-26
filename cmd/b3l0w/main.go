@@ -13,6 +13,8 @@ import (
 	"github.com/Below-Z3R0/b3l0w/internal/doctor"
 	"github.com/Below-Z3R0/b3l0w/internal/plugins"
 	"github.com/Below-Z3R0/b3l0w/internal/programs"
+	"github.com/Below-Z3R0/b3l0w/internal/systemdef"
+	"github.com/Below-Z3R0/b3l0w/internal/systeminstall"
 	"github.com/Below-Z3R0/b3l0w/internal/update"
 	"github.com/Below-Z3R0/b3l0w/internal/version"
 )
@@ -132,8 +134,11 @@ func list() int {
 // programa (por ejemplo `kitty-shapes install`).
 func installCommand(args []string) int {
 	if len(args) == 0 {
-		cli.Fail("falta el programa: b3l0w install <nombre>")
+		cli.Fail("falta el programa: b3l0w install <nombre>  (o `b3l0w install system`)")
 		return 1
+	}
+	if args[0] == "system" {
+		return installSystemCommand(args[1:])
 	}
 	name := args[0]
 	return withManifest(func(m *config.Manifest) int {
@@ -152,6 +157,110 @@ func installCommand(args []string) int {
 		cli.Ok(fmt.Sprintf("%s %s en %s", name, version, dest))
 		return 0
 	})
+}
+
+// installSystemCommand compara la definición del sistema contra esta
+// máquina y aplica lo que falta. Sin --apply no toca nada.
+func installSystemCommand(args []string) int {
+	profiles := []string{"desktop"}
+	file := ""
+	dotfiles := ""
+	apply := false
+	yes := false
+
+	for _, arg := range args {
+		switch {
+		case arg == "--apply":
+			apply = true
+		case arg == "--yes":
+			yes = true
+		case strings.HasPrefix(arg, "--profile="):
+			profiles = strings.Split(strings.TrimPrefix(arg, "--profile="), ",")
+		case strings.HasPrefix(arg, "--file="):
+			file = strings.TrimPrefix(arg, "--file=")
+		case strings.HasPrefix(arg, "--dotfiles="):
+			dotfiles = strings.TrimPrefix(arg, "--dotfiles=")
+		case arg == "-h" || arg == "--help":
+			fmt.Println("uso: b3l0w install system [--profile=desktop,dev] [--file=ruta] [--dotfiles=dir] [--apply] [--yes]")
+			return 0
+		default:
+			cli.Fail(fmt.Sprintf("opción desconocida: %s", arg))
+			return 1
+		}
+	}
+
+	var def *systemdef.Definition
+	var err error
+	if file != "" {
+		def, err = systemdef.Load(file)
+	} else {
+		def, err = systemdef.Builtin()
+	}
+	if err != nil {
+		cli.Fail(fmt.Sprintf("no se pudo leer la definición: %v", err))
+		return 1
+	}
+
+	profile, err := def.Merge(profiles)
+	if err != nil {
+		cli.Fail(err.Error())
+		return 1
+	}
+
+	if dotfiles == "" {
+		if dir, err := os.Getwd(); err == nil {
+			dotfiles = dir
+		}
+	}
+
+	plan := systeminstall.Build(profile, dotfiles)
+	printPlan(profiles, plan)
+
+	if !apply {
+		fmt.Printf("\n  %s\n", cli.Dim("simulación: no se cambió nada. Para aplicarlo: b3l0w install system --apply"))
+		return 0
+	}
+
+	cli.Step("Aplicando")
+	if err := systeminstall.Apply(plan, systeminstall.Options{Yes: yes}); err != nil {
+		cli.Fail(err.Error())
+		return 1
+	}
+	cli.Ok("sistema al día")
+	return 0
+}
+
+func printPlan(profiles []string, plan *systeminstall.Plan) {
+	cli.Step(fmt.Sprintf("Sistema · perfil %s", strings.Join(profiles, "+")))
+
+	list := func(title string, items []string) {
+		if len(items) == 0 {
+			fmt.Printf("  %s %s: nada\n", "✓", title)
+			return
+		}
+		fmt.Printf("  %s %s (%d): %s\n", "!", title, len(items), strings.Join(items, ", "))
+	}
+
+	list("paquetes", plan.Packages)
+	list("flatpak", plan.Flatpak)
+	list("propios", plan.Own)
+	list("servicios", plan.Services)
+	list("grupos", plan.Groups)
+
+	missing, sources := 0, 0
+	for _, f := range plan.Files {
+		switch {
+		case !f.SrcExists:
+			fmt.Printf("  %s dotfile sin origen: %s\n", "✗", f.Src)
+			sources++
+		case !f.DestExists:
+			fmt.Printf("  %s dotfile a instalar: %s\n", "!", f.Dest)
+			missing++
+		}
+	}
+	if sources == 0 && missing == 0 && len(plan.Files) > 0 {
+		fmt.Printf("  %s dotfiles: todos en su lugar\n", "✓")
+	}
 }
 
 func programCommand(args []string) int {
@@ -235,6 +344,8 @@ uso: b3l0w <comando> [opciones]
   update --check         reporta, no toca nada
   update --self          actualiza el propio b3l0w
   install <nombre>       baja el programa del release a ~/.local/bin
+  install system         compara la definición del sistema y aplica lo que falta
+                         (--profile=desktop,dev · --apply · --yes · --dotfiles=dir)
   doctor                 dependencias, manifiesto y directorio de plugins
   program add <nombre>   registra un programa (--source=… --asset=…)
   program remove <nom>   lo saca del manifiesto
