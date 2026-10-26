@@ -168,21 +168,51 @@ func installSystemCommand(args []string) int {
 	apply := false
 	yes := false
 
-	for _, arg := range args {
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+
+		// Acepta --clave=valor y --clave valor: escribir cualquiera de
+		// las dos formas es lo natural, y fallar en una es una trampa.
+		value := func() (string, bool) {
+			if _, after, found := strings.Cut(arg, "="); found {
+				return after, true
+			}
+			if i+1 < len(args) {
+				i++
+				return args[i], true
+			}
+			return "", false
+		}
+
 		switch {
 		case arg == "--apply":
 			apply = true
 		case arg == "--yes":
 			yes = true
-		case strings.HasPrefix(arg, "--profile="):
-			profiles = strings.Split(strings.TrimPrefix(arg, "--profile="), ",")
-		case strings.HasPrefix(arg, "--file="):
-			file = strings.TrimPrefix(arg, "--file=")
-		case strings.HasPrefix(arg, "--dotfiles="):
-			dotfiles = strings.TrimPrefix(arg, "--dotfiles=")
 		case arg == "-h" || arg == "--help":
 			fmt.Println("uso: b3l0w install system [--profile=desktop,dev] [--file=ruta] [--dotfiles=dir] [--apply] [--yes]")
 			return 0
+		case arg == "--profile" || strings.HasPrefix(arg, "--profile="):
+			v, ok := value()
+			if !ok {
+				cli.Fail("--profile necesita un valor")
+				return 1
+			}
+			profiles = strings.Split(v, ",")
+		case arg == "--file" || strings.HasPrefix(arg, "--file="):
+			v, ok := value()
+			if !ok {
+				cli.Fail("--file necesita un valor")
+				return 1
+			}
+			file = v
+		case arg == "--dotfiles" || strings.HasPrefix(arg, "--dotfiles="):
+			v, ok := value()
+			if !ok {
+				cli.Fail("--dotfiles necesita un valor")
+				return 1
+			}
+			dotfiles = v
 		default:
 			cli.Fail(fmt.Sprintf("opción desconocida: %s", arg))
 			return 1
