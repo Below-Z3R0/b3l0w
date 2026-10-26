@@ -10,6 +10,8 @@ b3l0w update                 # sistema (interactivo) y después los programas
 b3l0w update --system        # solo cachy-update / arch-update
 b3l0w update --programs      # solo los programas propios
 b3l0w update --check         # reporta, no toca nada
+b3l0w update --self          # actualiza el propio b3l0w
+b3l0w install <nombre>       # baja el programa del release a ~/.local/bin
 b3l0w doctor                 # dependencias, programas y directorio de plugins
 ```
 
@@ -33,6 +35,35 @@ b3l0w/
 ```
 
 Sin dependencias: solo la biblioteca estándar de Go.
+
+## Instalar un programa
+
+```
+b3l0w install kitty-shapes
+```
+
+Baja el asset del último release del repo que dice el manifiesto y lo
+deja en `~/.local/bin`. Valida con `version` antes de pisar el que está.
+
+El manifiesto declara el asset porque cada repo publica el suyo:
+
+```json
+{ "name": "kitty-shapes", "source": "github:Below-Z3R0/kitty-shapes", "asset": "kitty-shapes-linux-x64" }
+```
+
+`install` deja el **binario**. La configuración (configs de fastfetch,
+enganche de fish) la hace el propio programa con su `install`.
+
+## Actualizarse a sí mismo
+
+```
+b3l0w update --self
+```
+
+Es el caso especial del contrato: el core no puede delegar su propio
+update. Baja su asset, valida la versión y se reemplaza con un rename
+atómico. Si el binario pertenece a un paquete (`pacman -Qo`), no lo toca:
+eso lo hace pacman.
 
 ## El contrato de cada programa
 

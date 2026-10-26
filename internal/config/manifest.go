@@ -11,10 +11,16 @@ import (
 // Schema es la versión del formato del manifiesto.
 const Schema = 1
 
-// Program es un programa propio que el core sabe consultar y actualizar.
+// Program es un programa propio que el core sabe consultar, instalar y
+// actualizar.
+//
+// Asset es el nombre del archivo en el release de GitHub: cada repo lo
+// publica con el suyo (boot-preview-linux-amd64, kitty-shapes-linux-x64),
+// así que no se puede adivinar desde el nombre del programa.
 type Program struct {
 	Name   string `json:"name"`
 	Source string `json:"source,omitempty"`
+	Asset  string `json:"asset,omitempty"`
 }
 
 // Manifest es la lista de programas registrados.
@@ -28,8 +34,8 @@ func Default() *Manifest {
 	return &Manifest{
 		Version: Schema,
 		Programs: []Program{
-			{Name: "boot-preview", Source: "github:Below-Z3R0/boot-preview"},
-			{Name: "kitty-shapes", Source: "github:Below-Z3R0/kitty-shapes"},
+			{Name: "boot-preview", Source: "github:Below-Z3R0/boot-preview", Asset: "boot-preview-linux-amd64"},
+			{Name: "kitty-shapes", Source: "github:Below-Z3R0/kitty-shapes", Asset: "kitty-shapes-linux-x64"},
 		},
 	}
 }
@@ -77,12 +83,18 @@ func (m *Manifest) Get(name string) *Program {
 	return nil
 }
 
-// Add registra un programa. Devuelve false si ya estaba: es idempotente.
+// Add registra un programa con su fuente. Devuelve false si ya estaba.
 func (m *Manifest) Add(name, source string) bool {
-	if m.Get(name) != nil {
+	return m.AddProgram(Program{Name: name, Source: source})
+}
+
+// AddProgram registra un programa completo. Devuelve false si ya estaba:
+// es idempotente.
+func (m *Manifest) AddProgram(p Program) bool {
+	if m.Get(p.Name) != nil {
 		return false
 	}
-	m.Programs = append(m.Programs, Program{Name: name, Source: source})
+	m.Programs = append(m.Programs, p)
 	return true
 }
 

@@ -46,6 +46,8 @@ func run(args []string) int {
 		return withManifest(doctor.Run)
 	case "update":
 		return updateCommand(rest)
+	case "install":
+		return installCommand(rest)
 	case "program":
 		return programCommand(rest)
 	case "plugins":
@@ -87,8 +89,10 @@ func updateCommand(args []string) int {
 			opts.Programs = true
 		case "--check":
 			opts.Check = true
+		case "--self":
+			opts.Self = true
 		case "-h", "--help":
-			fmt.Println("uso: b3l0w update [--system|--programs|--check]")
+			fmt.Println("uso: b3l0w update [--self] [--system|--programs] [--check]")
 			return 0
 		default:
 			cli.Fail(fmt.Sprintf("opción desconocida: %s", arg))
@@ -123,6 +127,33 @@ func list() int {
 	})
 }
 
+// installCommand baja el programa del último release y lo deja en
+// ~/.local/bin. No toca su configuración: eso lo hace el propio
+// programa (por ejemplo `kitty-shapes install`).
+func installCommand(args []string) int {
+	if len(args) == 0 {
+		cli.Fail("falta el programa: b3l0w install <nombre>")
+		return 1
+	}
+	name := args[0]
+	return withManifest(func(m *config.Manifest) int {
+		program := m.Get(name)
+		if program == nil {
+			cli.Fail(fmt.Sprintf("%s no está registrado (b3l0w program add %s --source=github:owner/repo --asset=archivo)", name, name))
+			return 1
+		}
+		cli.Step(fmt.Sprintf("Instalando %s", name))
+		version, err := programs.Install(*program)
+		if err != nil {
+			cli.Fail(err.Error())
+			return 1
+		}
+		dest, _ := programs.InstallPath(name)
+		cli.Ok(fmt.Sprintf("%s %s en %s", name, version, dest))
+		return 0
+	})
+}
+
 func programCommand(args []string) int {
 	if len(args) == 0 {
 		fmt.Println("uso: b3l0w program <add|remove> <nombre> [--source github:owner/repo]")
@@ -132,9 +163,14 @@ func programCommand(args []string) int {
 	action := args[0]
 	name := ""
 	source := ""
+	asset := ""
 	for _, arg := range args[1:] {
 		if strings.HasPrefix(arg, "--source=") {
 			source = strings.TrimPrefix(arg, "--source=")
+			continue
+		}
+		if strings.HasPrefix(arg, "--asset=") {
+			asset = strings.TrimPrefix(arg, "--asset=")
 			continue
 		}
 		if name == "" {
@@ -149,7 +185,7 @@ func programCommand(args []string) int {
 	return withManifest(func(m *config.Manifest) int {
 		switch action {
 		case "add":
-			if !m.Add(name, source) {
+			if !m.AddProgram(config.Program{Name: name, Source: source, Asset: asset}) {
 				cli.Warn(fmt.Sprintf("%s ya estaba registrado", name))
 				return 0
 			}
@@ -197,8 +233,10 @@ uso: b3l0w <comando> [opciones]
   update --system        solo el sistema base (cachy-update / arch-update)
   update --programs      solo los programas propios
   update --check         reporta, no toca nada
+  update --self          actualiza el propio b3l0w
+  install <nombre>       baja el programa del release a ~/.local/bin
   doctor                 dependencias, manifiesto y directorio de plugins
-  program add <nombre>   registra un programa
+  program add <nombre>   registra un programa (--source=… --asset=…)
   program remove <nom>   lo saca del manifiesto
   plugins                lista las extensiones instaladas
   version                imprime la versión

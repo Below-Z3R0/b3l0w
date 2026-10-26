@@ -8,6 +8,7 @@ import (
 	"github.com/Below-Z3R0/b3l0w/internal/cli"
 	"github.com/Below-Z3R0/b3l0w/internal/config"
 	"github.com/Below-Z3R0/b3l0w/internal/programs"
+	"github.com/Below-Z3R0/b3l0w/internal/selfupdate"
 	"github.com/Below-Z3R0/b3l0w/internal/system"
 )
 
@@ -16,12 +17,24 @@ type Options struct {
 	System   bool
 	Programs bool
 	Check    bool
+	Self     bool
 }
 
 // Run ejecuta el update y devuelve el código de salida.
 func Run(m *config.Manifest, opts Options) int {
 	if opts.Check {
 		return check(m)
+	}
+
+	// El CLI primero: así el resto corre con la versión nueva.
+	if opts.Self {
+		if code := selfUpdate(); code != 0 {
+			return code
+		}
+		// `update --self` a secas es solo eso.
+		if !opts.System && !opts.Programs {
+			return 0
+		}
 	}
 
 	// Sin banderas: las dos mitades. Con una sola: esa.
@@ -35,6 +48,21 @@ func Run(m *config.Manifest, opts Options) int {
 	}
 	if programsWanted {
 		return updatePrograms(m)
+	}
+	return 0
+}
+
+func selfUpdate() int {
+	cli.Step("Actualizando b3l0w")
+	result, err := selfupdate.Run()
+	if err != nil {
+		cli.Fail(err.Error())
+		return 1
+	}
+	if result.Changed {
+		cli.Ok(fmt.Sprintf("b3l0w %s -> %s", result.Before, result.After))
+	} else {
+		cli.Ok(fmt.Sprintf("b3l0w ya está al día (%s)", result.After))
 	}
 	return 0
 }

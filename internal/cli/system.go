@@ -100,3 +100,29 @@ func ExpandHome(path string) string {
 	}
 	return filepath.Join(home, strings.TrimPrefix(path, "~"))
 }
+
+// ReplaceFile reemplaza dest con src de forma atómica.
+//
+// Copia a un temporal en el mismo directorio y hace rename: así no se
+// pisa un binario que está corriendo ("text file busy") y no queda un
+// archivo a medias si algo falla.
+func ReplaceFile(src, dest string) error {
+	// Si el destino es un symlink (por ejemplo ~/.local/bin/prog ->
+	// ~/.config/prog/prog), se reemplaza el archivo real: si no, quedaría
+	// el symlink convertido en una copia y el binario duplicado.
+	if resolved, err := filepath.EvalSymlinks(dest); err == nil {
+		dest = resolved
+	}
+	if err := os.MkdirAll(filepath.Dir(dest), 0o755); err != nil {
+		return err
+	}
+	data, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	tmp := dest + ".new"
+	if err := os.WriteFile(tmp, data, 0o755); err != nil {
+		return err
+	}
+	return os.Rename(tmp, dest)
+}
