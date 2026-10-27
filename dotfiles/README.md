@@ -21,6 +21,17 @@ Se aplican **con backup**: si el destino existe, queda como `<destino>.bak-<fech
 - `fastfetch/emblem/` (salida en runtime del greeting).
 - El script `b3l0wz3r0-fastfetch`: lo instala `kitty-shapes install`.
 
+## Noctalia: config vs state
+
+`~/.config/noctalia/config.toml` son los **defaults**. La UI del shell (Settings)
+no escribe ahí: guarda lo que cambiás en `~/.local/state/noctalia/settings.toml`,
+que **pisa** al config. Por eso el archivo puede decir una cosa y la UI otra.
+
+Acá se versiona solo `config.toml`, con los valores deseados como default. El
+`settings.toml` es estado de la máquina (avatar, monitores, wallpapers) y no se
+versiona. Si querés que un cambio de la UI quede como default de la distro, hay
+que copiarlo a este `config.toml`.
+
 ## Rutas
 
 Las rutas absolutas del autor se reemplazaron por `$HOME` donde el programa lo expande

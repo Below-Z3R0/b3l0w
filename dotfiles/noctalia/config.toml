@@ -177,11 +177,11 @@ wifi_disabled = []
 wifi_enabled = []
 
 [hot_corners]
-delay_ms = 500
+delay_ms = 150
 enabled = true
 
     [hot_corners.bottom_left]
-    action = "none"
+    action = "window_switcher"
     command = ""
 
     [hot_corners.bottom_right]
@@ -193,7 +193,7 @@ enabled = true
     command = ""
 
     [hot_corners.top_right]
-    action = "control-center"
+    action = "none"
     command = ""
 
 [idle]
