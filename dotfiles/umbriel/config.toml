@@ -65,14 +65,6 @@ extent_presets = [0.333, 0.5, 0.667]
 [layout.scrolling]
 default_extent_fraction = 0.5
 
-# Layer rules
-[[layer_rule]]
-match.namespace = "^kitty$"
-blur = true
-blur_ignore_alpha = 0.5
-blur_popups = true
-blur_optimized = false
-
 [[layer_rule]]
 match.namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd|desktop-widget-[^\"]*)$"
 blur = true
@@ -105,11 +97,6 @@ default_pinned = true
 match.app_id = "^steam_app_.*$"
 confine_pointer = true
 
-[[window_rule]]
-match.is_scratchpad = true
-border_color_focused = "#31748fff"
-border_color_unfocused = "#112f3cff"
-
 # Scratchpads
 [[scratchpad]]
 name = "terminal"
@@ -123,23 +110,15 @@ name = "music"
 
 # APPS
 "Mod+T"           = { action = "spawn:kitty", repeat = false }
-"Control+Alt+T"   = { action = "spawn:kitty", repeat = false }
-"Alt+grave"       = { action = "spawn:kitty", repeat = false }
 "Mod+Space"       = "spawn:noctalia msg panel-toggle launcher"
 "Mod+Shift+B"     = "spawn:noctalia msg bar-toggle"
-"F12"             = "spawn:noctalia msg bar-toggle"
 "Mod+Shift+S"     = { action = "spawn:satty-wrap gui", repeat = false }
-"Print"           = { action = "spawn:satty-wrap gui", repeat = false }
-"Ctrl+Print"      = "spawn:grim screenshot.png"
-"Alt+Print"       = "spawn:grim -g $(slurp) - | wl-copy"
 "Mod+Shift+O"     = "spawn:ocr-region.sh"
-"Control+Shift+O" = "spawn:ocr-region.sh"
 
 # LOCK + ORCA
 "Mod+Alt+L"     = "spawn:noctalia-greeter-session"
 "Control+Alt+L" = "spawn:noctalia-greeter-session"
 "Mod+Alt+S"     = "spawn:pkill orca || exec orca"
-"Control+Alt+S" = "spawn:pkill orca || exec orca"
 
 # MULTIMEDIA
 "XF86AudioRaiseVolume" = { action = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0", allow_when_locked = true }
