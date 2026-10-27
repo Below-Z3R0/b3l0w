@@ -4,9 +4,6 @@ files = []
 [include.optional]
 files = ["noctalia.toml"]
 
-# Below-Z3R0-os — Umbriel config (v6: migración COMPLETA Niri → Umbriel)
-# 2026-10-03: basados en docs oficiales de Niri + Umbriel
-
 [general]
 mod_key = "super"
 xwayland = true
@@ -51,7 +48,7 @@ delay_ms = 100
 max_speed = 1500.0
 
 [input.focus]
-follows_mouse = false
+follows_mouse = true
 
 # Environment (Qt, KDE, SDL)
 [environment]
@@ -60,7 +57,6 @@ SDL_VIDEODRIVER = "wayland"
 QT_QPA_PLATFORM = "wayland"
 QT_QPA_PLATFORMTHEME = "kde"
 QT_QPA_PLATFORMTHEME_QT6 = "kde"
-XDG_MENU_PREFIX = "plasma-"
 
 # Layout
 [layout]
@@ -68,23 +64,6 @@ extent_presets = [0.333, 0.5, 0.667]
 
 [layout.scrolling]
 default_extent_fraction = 0.5
-
-# Colors: Rosé Pine
-
-[hot_corners.top_right]
-enabled = true
-delay_ms = 500
-action = "spawn:noctalia msg panel-toggle notifications"
-
-[hot_corners.bottom_left]
-enabled = true
-delay_ms = 500
-action = "spawn:noctalia msg panel-toggle launcher"
-
-[hot_corners.bottom_right]
-enabled = true
-delay_ms = 500
-action = "spawn:noctalia msg panel-toggle control-center"
 
 # Layer rules
 [[layer_rule]]
@@ -117,49 +96,13 @@ default_floating = true
 default_floating_size_px = { width = 800, height = 600 }
 
 [[window_rule]]
-match.app_id = "^firefox$"
-match.title = "^Picture-in-Picture$"
-default_floating = true
-
-[[window_rule]]
-match.app_id = "^org[.]vinegarhq[.]Sober$"
-default_floating = true
-default_position = { x = 100, y = 100 }
-border_width = 0
-shadow = false
-
-[[window_rule]]
 match.title = "^notificationtoasts_.+_desktop"
 default_position = { x = 0, y = 0, anchor = "bottom_right" }
 default_focused = false
 default_pinned = true
 
 [[window_rule]]
-match.app_id = "^vesktop$"
-border_color_focused = "#ebbcbaff"
-
-[[window_rule]]
-match.app_id = "^code$"
-border_color_focused = "#9ccfd8ff"
-
-[[window_rule]]
-match.app_id = "^org[.]pulseaudio[.]pavucontrol$"
-default_floating = true
-default_floating_size = { width = 0.5, height = 0.6 }
-
-[[window_rule]]
-match.app_id = "^blueman-manager$"
-default_floating = true
-
-[[window_rule]]
-match.app_id = "^steam$"
-default_fullscreen = true
-
-[[window_rule]]
 match.app_id = "^steam_app_.*$"
-default_workspace = 4
-default_fullscreen = true
-vrr = "always"
 confine_pointer = true
 
 [[window_rule]]
@@ -185,12 +128,12 @@ name = "music"
 "Mod+Space"       = "spawn:noctalia msg panel-toggle launcher"
 "Mod+Shift+B"     = "spawn:noctalia msg bar-toggle"
 "F12"             = "spawn:noctalia msg bar-toggle"
-"Mod+Shift+S"     = { action = "spawn:$HOME/.local/bin/satty-wrap gui", repeat = false }
-"Print"           = { action = "spawn:$HOME/.local/bin/satty-wrap gui", repeat = false }
+"Mod+Shift+S"     = { action = "spawn:satty-wrap gui", repeat = false }
+"Print"           = { action = "spawn:satty-wrap gui", repeat = false }
 "Ctrl+Print"      = "spawn:grim screenshot.png"
 "Alt+Print"       = "spawn:grim -g $(slurp) - | wl-copy"
-"Mod+Shift+O"     = "spawn:$HOME/.local/bin/ocr-region.sh"
-"Control+Shift+O" = "spawn:$HOME/.local/bin/ocr-region.sh"
+"Mod+Shift+O"     = "spawn:ocr-region.sh"
+"Control+Shift+O" = "spawn:ocr-region.sh"
 
 # LOCK + ORCA
 "Mod+Alt+L"     = "spawn:noctalia-greeter-session"
