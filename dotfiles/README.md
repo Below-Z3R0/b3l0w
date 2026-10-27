@@ -21,6 +21,23 @@ Se aplican **con backup**: si el destino existe, queda como `<destino>.bak-<fech
 - `fastfetch/emblem/` (salida en runtime del greeting).
 - El script `b3l0wz3r0-fastfetch`: lo instala `kitty-shapes install`.
 
+## Noctalia: config vs state (y secretos)
+
+**`dotfiles/noctalia/config.toml` es el export de la config efectiva**
+(`noctalia config export`): incluye lo que la UI guarda en el state, no solo los
+defaults. Se regenera con:
+
+```bash
+noctalia config export > dotfiles/noctalia/config.toml
+```
+
+Antes de commitear, **redactar credenciales**: el export puede traer
+`[plugin_settings."…"] client_secret = "…"`. Se deja vacío y cada máquina lo
+configura desde la UI. Nunca commitear el valor.
+
+**`~/.local/state/noctalia/settings.toml` NO se versiona**: contiene estado de la
+máquina (monitores, avatar, wallpapers, apps del dock) y credenciales de plugins.
+
 ## Noctalia: config vs state
 
 `~/.config/noctalia/config.toml` son los **defaults**. La UI del shell (Settings)
