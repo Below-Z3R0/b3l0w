@@ -34,6 +34,22 @@
       "plugin_api": 43
     },
     {
+      "id": "b3l0w/hover-zones",
+      "name": "Hover Zones",
+      "repo": "Below-Z3R0/b3l0w-hover-zones",
+      "path": "b3l0w-hover-zones",
+      "version": "1.0.0",
+      "plugin_api": 9
+    },
+    {
+      "id": "b3l0w/igpu-power",
+      "name": "iGPU Power",
+      "repo": "Below-Z3R0/b3l0w-igpu-power",
+      "path": "b3l0w-igpu-power",
+      "version": "1.0.0",
+      "plugin_api": 9
+    },
+    {
       "id": "b3l0w/kanban",
       "name": "b3l0w Kanban",
       "repo": "Below-Z3R0/b3l0w-kanban",
@@ -64,22 +80,6 @@
       "path": "b3l0w-ytmusic",
       "version": "1.0.0",
       "plugin_api": 43
-    },
-    {
-      "id": "b3l0w/hover-zones",
-      "name": "Hover Zones",
-      "repo": "Below-Z3R0/b3l0w-hover-zones",
-      "path": "b3l0w-hover-zones",
-      "version": "1.0.0",
-      "plugin_api": 9
-    },
-    {
-      "id": "b3l0w/igpu-power",
-      "name": "iGPU Power",
-      "repo": "Below-Z3R0/b3l0w-igpu-power",
-      "path": "b3l0w-igpu-power",
-      "version": "1.0.0",
-      "plugin_api": 9
     }
   ]
 }
