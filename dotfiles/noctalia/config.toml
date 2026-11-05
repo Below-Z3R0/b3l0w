@@ -1191,7 +1191,7 @@ show_tooltip = false
 style = "focus_hint"
 
 [[widget.igpu_power]]
-command = "/usr/local/bin/igpu-power-menu.sh menu"
+command = "b3l0w plugin-exec igpu-power-menu menu"
 glyph = "memory"
 interval_seconds = 30
 middle_command = ""
