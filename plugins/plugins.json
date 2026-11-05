@@ -66,7 +66,7 @@
       "plugin_api": 43
     },
     {
-      "id": "user/hover-zones",
+      "id": "b3l0w/hover-zones",
       "name": "Hover Zones",
       "repo": "Below-Z3R0/b3l0w-hover-zones",
       "path": "b3l0w-hover-zones",
@@ -74,7 +74,7 @@
       "plugin_api": 9
     },
     {
-      "id": "user/igpu-power",
+      "id": "b3l0w/igpu-power",
       "name": "iGPU Power",
       "repo": "Below-Z3R0/b3l0w-igpu-power",
       "path": "b3l0w-igpu-power",
