@@ -7,8 +7,7 @@
       "repo": "Below-Z3R0/b3l0w-anilist",
       "path": "b3l0w-anilist",
       "version": "1.0.0",
-      "plugin_api": 43,
-      "sha256": ""
+      "plugin_api": 43
     },
     {
       "id": "b3l0w/audio",
@@ -16,8 +15,7 @@
       "repo": "Below-Z3R0/b3l0w-audio",
       "path": "b3l0w-audio",
       "version": "1.0.0",
-      "plugin_api": 43,
-      "sha256": ""
+      "plugin_api": 43
     },
     {
       "id": "b3l0w/audit",
@@ -25,8 +23,7 @@
       "repo": "Below-Z3R0/b3l0w-audit",
       "path": "b3l0w-audit",
       "version": "1.0.0",
-      "plugin_api": 43,
-      "sha256": ""
+      "plugin_api": 43
     },
     {
       "id": "b3l0w/containers",
@@ -34,8 +31,7 @@
       "repo": "Below-Z3R0/b3l0w-containers",
       "path": "b3l0w-containers",
       "version": "1.0.0",
-      "plugin_api": 43,
-      "sha256": ""
+      "plugin_api": 43
     },
     {
       "id": "b3l0w/kanban",
@@ -43,8 +39,7 @@
       "repo": "Below-Z3R0/b3l0w-kanban",
       "path": "b3l0w-kanban",
       "version": "1.0.0",
-      "plugin_api": 43,
-      "sha256": ""
+      "plugin_api": 43
     },
     {
       "id": "b3l0w/net",
@@ -52,8 +47,7 @@
       "repo": "Below-Z3R0/b3l0w-net",
       "path": "b3l0w-net",
       "version": "1.0.0",
-      "plugin_api": 43,
-      "sha256": ""
+      "plugin_api": 43
     },
     {
       "id": "b3l0w/wallpaper",
@@ -61,8 +55,7 @@
       "repo": "Below-Z3R0/b3l0w-wallpaper",
       "path": "b3l0w-wallpaper",
       "version": "0.4.1",
-      "plugin_api": 43,
-      "sha256": ""
+      "plugin_api": 43
     },
     {
       "id": "b3l0w/ytmusic",
@@ -70,8 +63,7 @@
       "repo": "Below-Z3R0/b3l0w-ytmusic",
       "path": "b3l0w-ytmusic",
       "version": "1.0.0",
-      "plugin_api": 43,
-      "sha256": ""
+      "plugin_api": 43
     }
   ]
 }
