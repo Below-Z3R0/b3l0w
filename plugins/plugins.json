@@ -64,6 +64,22 @@
       "path": "b3l0w-ytmusic",
       "version": "1.0.0",
       "plugin_api": 43
+    },
+    {
+      "id": "user/hover-zones",
+      "name": "Hover Zones",
+      "repo": "Below-Z3R0/b3l0w-hover-zones",
+      "path": "b3l0w-hover-zones",
+      "version": "1.0.0",
+      "plugin_api": 9
+    },
+    {
+      "id": "user/igpu-power",
+      "name": "iGPU Power",
+      "repo": "Below-Z3R0/b3l0w-igpu-power",
+      "path": "b3l0w-igpu-power",
+      "version": "1.0.0",
+      "plugin_api": 9
     }
   ]
 }
