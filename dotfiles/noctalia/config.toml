@@ -619,35 +619,26 @@ panel_open_near_click = true
 panel_placement = "attached"
 
 [plugins]
-auto_update = "all"
+auto_update = "none"
 enabled = [
     "dotnetrob/cat",
-    "user/igpu-power",
+    "b3l0w/igpu-power",
     "nightwatch75/todo",
-    "8bury/mini-docker",
     "yocraft/qrcode",
-    "aabidk20/yt-music",
     "alexander/screen-toolkit",
     "ahmedhossamdev/sticky-notes",
-    "cleboost/anilist",
-    "icefish/phone-operate",
     "prponkshe/umbriel-displays",
     "noctalia/umbriel-companion",
-    "noctalia/wallhaven",
-    "noctalia/mpvpaper",
-    "cero800/arch-audit",
-    "blackbartblues/audio-switcher",
-    "davinci13/containers",
-    "shangshui0302/github-kanban",
     "b3l0w/anilist",
-    "b3l0w/kanban",
     "b3l0w/audit",
     "b3l0w/ytmusic",
     "b3l0w/containers",
     "b3l0w/audio",
     "b3l0w/net",
     "b3l0w/wallpaper",
-    "user/hover-zones"
+    "b3l0w/hover-zones",
+    "icefish/phone-operate",
+    "b3l0w/kanban"
 ]
 
     [[plugins.source]]
@@ -1049,38 +1040,38 @@ type = "clock"
 
 [widget.hover_clipboard]
 panel = "clipboard"
-type = "user/hover-zones:hover_zone"
+type = "b3l0w/hover-zones:hover_zone"
 
 [widget.hover_control]
 anchor = true
 close_on_leave = true
 context = "home"
 panel = "control-center"
-type = "user/hover-zones:hover_zone"
+type = "b3l0w/hover-zones:hover_zone"
 
 [widget.hover_phone]
 panel = "icefish/phone-operate:main"
 scale = 0.60000000000000009
-type = "user/hover-zones:hover_zone"
+type = "b3l0w/hover-zones:hover_zone"
 
 [widget.hover_zone]
 panel = "nightwatch75/todo:panel"
 scale = 0.60000000000000009
-type = "user/hover-zones:hover_zone"
+type = "b3l0w/hover-zones:hover_zone"
 
 [widget.hover_zone_2]
 panel = "ahmedhossamdev/sticky-notes:panel"
 scale = 0.60000000000000009
-type = "user/hover-zones:hover_zone"
+type = "b3l0w/hover-zones:hover_zone"
 
 [widget.hover_zone_3]
 anchor = true
 panel = "b3l0w/wallpaper:panel"
-type = "user/hover-zones:hover_zone"
+type = "b3l0w/hover-zones:hover_zone"
 
 [widget.igpu_button]
 color = "primary"
-type = "user/igpu-power:button"
+type = "b3l0w/igpu-power:button"
 
 [widget.input_volume]
 device = "input"
