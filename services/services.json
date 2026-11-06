@@ -26,7 +26,6 @@
         "intel": "OpenVINO"
       },
       "ports": [
-        7700,
         6333,
         6334,
         7711,
@@ -34,7 +33,13 @@
       ],
       "health": "http://127.0.0.1:7712/readyz",
       "state": "ready",
-      "size_gb": 8.7
+      "size_gb": 8.7,
+      "overrides": {
+        "cuda": "compose.gpu.yml",
+        "intel": "compose.dri.yml",
+        "amd": "compose.dri.yml"
+      },
+      "models": "argosctl models install --yes qwen3-embed-0.6b bge-reranker-v2-m3-int8"
     },
     {
       "id": "seanime",
@@ -94,7 +99,12 @@
         "streamd",
         "mcp",
         "misakid"
-      ]
+      ],
+      "overrides": {
+        "cuda": "compose.gpu.yml",
+        "intel": "compose.dri.yml",
+        "amd": "compose.dri.yml"
+      }
     }
   ]
 }
