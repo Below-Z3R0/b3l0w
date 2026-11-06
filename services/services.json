@@ -86,22 +86,15 @@
       ],
       "health": "http://127.0.0.1:9101/healthz",
       "state": "ready",
-      "size_gb": 6
-    },
-    {
-      "id": "whisper",
-      "name": "Whisper",
-      "repo": "Below-Z3R0/whisper",
-      "variants": [
-        "cpu",
-        "cuda"
-      ],
-      "gpu": true,
-      "ports": [
-        9100
-      ],
-      "state": "planned",
-      "size_gb": 2
+      "size_gb": 6,
+      "description": "Vox (STT/TTS), Auris (ASR) y Streamd, más el sidecar misakid",
+      "components": [
+        "vox",
+        "auris",
+        "streamd",
+        "mcp",
+        "misakid"
+      ]
     }
   ]
 }
